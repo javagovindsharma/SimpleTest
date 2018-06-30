@@ -1,0 +1,26 @@
+Given Call rates generate the bill for the user.
+Assuming max limit usage is 300
+
+LOCAL CALL Rs.0.50
+STD CALL Rs.1
+ISD CALL Rs.12
+LOCAL SMS Rs.0.25
+STD SMS Rs.0.50
+ISD SMS Rs.5.0
+
+Take continuous input and print output.
+
+Input : 25 mins std call to abc
+Output : 25 Within Limit
+
+Input : 55 mins local call to abc
+Output : 27 Within Limit
+
+Input : 125 mins isd call to abc
+Output : 1500 Exceeded Limit by Rs.1200
+
+Input : 25 local sms to abc
+Output : 6 Within Limit
+
+Input : 50 std sms to abc
+Output : 25 Within Limit
