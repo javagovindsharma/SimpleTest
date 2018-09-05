@@ -187,7 +187,7 @@ public class FirstSendSMS {
 		StringBuilder response = null;
 		String targetURL = "http://103.16.101.52:8080/sendsms/bulksms?";
 
-		String urlParameters = "username=anss-ansihat&password=ans123&type=2&dlr=1&destination=" + mobileNumber
+		String urlParameters = "username=govinduser&password=govindpwd&type=2&dlr=1&destination=" + mobileNumber
 				+ "&source=ASHAIN&message=" + message;
 
 		String msg = "";
