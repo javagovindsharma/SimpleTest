@@ -1,0 +1,120 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 28-Sep-20189:17:32 AM
+ */
+
+/**
+ * @author Govind
+ *
+ */
+public class RaadWriteFile {
+
+	/**
+	 * @param args
+	 */
+
+	private static final String READFILENAME = "/home/tattva/readFile.txt";
+	private static final String WRITEFILENAME = "/home/tattva/writeFile.txt";
+	
+	public static void main(String[] args) {
+
+		String content="Integer Values\n";int sum=0,avg=0,count=1;
+		
+		List<Integer>  list=readFileData();
+		
+		for(int val:list) {
+			content=content+val+"\n";
+			sum=sum+val;
+			count++;
+		}
+		
+		content=content+"Sum Val "+count+" Number  \n";
+		content=content+sum+"\n";
+		
+		avg=sum/count;
+		
+		content=content+"Avarage of  "+count+" Number  \n";
+		content=content+avg+"\n";
+		
+		String msg=createFileAndWriteEmp(content);
+		System.out.println("**********Done*******"+msg);
+		
+	}
+
+	public static List<Integer> readFileData() {
+		List<Integer>  list=new ArrayList<Integer>();
+		
+		
+		BufferedReader br = null;
+		FileReader fr = null;
+
+		try {
+
+			fr = new FileReader(READFILENAME);
+			br = new BufferedReader(fr);
+
+			String sCurrentLine;
+
+			while ((sCurrentLine = br.readLine()) != null) {
+				System.out.println(sCurrentLine);
+				if(sCurrentLine.equalsIgnoreCase("") || sCurrentLine.equalsIgnoreCase(" ") || sCurrentLine==null) {
+					
+				}else {	
+					int vals=Integer.parseInt(sCurrentLine);
+					list.add(vals);
+				}
+			}
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (br != null)
+					br.close();
+				if (fr != null)
+					fr.close();
+			} catch (IOException ex) {		ex.printStackTrace();	}
+
+		}
+
+		return list;
+	}//readFileData
+	
+	
+	public  static  String createFileAndWriteEmp(String content) {
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		String msg = "failed";
+		try {
+			fw = new FileWriter(WRITEFILENAME);
+			bw = new BufferedWriter(fw);
+
+			bw.write(content);
+			System.out.println("Done");
+			msg = "done";
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
+		}
+		return msg;
+	}
+
+}
