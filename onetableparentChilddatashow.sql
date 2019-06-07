@@ -62,4 +62,15 @@ insert into categories  values('16','subcategory10','4');
 insert into categories  values('17','subcategory19','4');
 
 
+//OUTPUT
+
+category_id parent_id   name            parent_name 
+2           1           subcategory1    category1   
+4           1           subcategory2    category1
+8           5           subcategory9    subcategory4
+9           6           subcategory5    subcategory3
+10          6           subcategory10   subcategory3
+12          4           subcategory6    subcategory2
+13          4           subcategory7    subcategory2
+
 
