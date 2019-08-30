@@ -1,0 +1,4 @@
+ setTimeout(() => {const b: any = document.querySelector('.f-cancel-dialog');
+      if (b) {
+      b.focus();
+       } }, 10);
