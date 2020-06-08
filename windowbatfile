@@ -1,0 +1,10 @@
+@echo on
+echo "Starting up the myexecjar application..."
+FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ govin.txt"`) do (
+    set "var=%%a"
+    SETLOCAL EnableDelayedExpansion
+    set "var=!var:*:=!"
+    echo(!var!
+    ENDLOCAL
+)
+java -jar reporting-solution-0.0.1-SNAPSHOT.jar
