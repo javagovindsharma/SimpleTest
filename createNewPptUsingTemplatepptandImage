@@ -1,0 +1,117 @@
+package kraken.pptx;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.ooxml.POIXMLProperties.CoreProperties;
+import org.apache.poi.openxml4j.opc.PackagePart;
+import org.apache.poi.sl.usermodel.PictureData;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.poi.xslf.usermodel.XSLFPictureData;
+import org.apache.poi.xslf.usermodel.XSLFPictureShape;
+import org.apache.poi.xslf.usermodel.XSLFShape;
+import org.apache.poi.xslf.usermodel.XSLFSlide;
+import org.apache.poi.xslf.usermodel.XSLFTextShape;
+
+public class ReadingPptExample {
+	public static void main(String[] args) {
+		String path="C:\\uploads\\chart\\BHA-AFR\\4G SSV report v1.4_updated.pptx";
+	//	String path="C:\\Users\\govishar\\Desktop\\chartImage\\Final\\4G SSV.pptx";
+		
+		readPPTXFile(path);
+	}
+
+	public static void readPPTXFile(String path) {
+		try {
+			XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(path));
+			List<XSLFSlide> slides = ppt.getSlides();
+			readPPT(ppt);
+			System.out.println("*************************8");
+			} catch (Exception E) {
+
+		}
+
+	}
+
+	public static void createPPTX(XMLSlideShow originalppt) throws Exception {
+		// creating a presentation
+		XMLSlideShow ppt = new XMLSlideShow();
+		List<XSLFSlide> orgslides = originalppt.getSlides();
+		for (XSLFSlide orgslide : orgslides) {
+			// creating a slide in it
+			XSLFSlide slide = ppt.createSlide();
+			slide = orgslide;
+			// reading an image
+			File image = new File("C:\\uploads\\chart\\TEST-GDC\\nokiachart.PNG");
+			// converting it into a byte array
+			byte[] pictureData = IOUtils.toByteArray(new FileInputStream(image));
+			XSLFPictureData xSLFPictureData = ppt.addPicture(pictureData, PictureData.PictureType.PNG);
+			XSLFPictureShape pic = slide.createPicture(xSLFPictureData);
+		}
+		// creating a file object
+		File file = new File("c:\\uploads\\addingimage.pptx");
+		FileOutputStream out = new FileOutputStream(file);
+		// saving the changes to a file
+		ppt.write(out);
+		System.out.println("image added successfully");
+		out.close();
+	}
+
+	public static void readPPT(XMLSlideShow ppt) throws IOException {
+		CoreProperties props = ppt.getProperties().getCoreProperties();
+		List<String> imageList = null;
+		try (Stream<Path> walk = Files
+				.walk(Paths.get("C:\\Users\\govishar\\Desktop\\chartImage\\Final\\4G-SSV\\slideImage"))) {
+			imageList = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String title = props.getTitle();
+		System.out.println("Title: " + title);
+		List<XSLFPictureData> pictList = ppt.getPictureData();
+		int i = 0;
+		for (XSLFSlide slide : ppt.getSlides()) {
+			System.out.println("Starting slide...");
+			List<XSLFShape> shapes = slide.getShapes();
+			PackagePart ppart = slide.getPackagePart();
+			for (XSLFShape shape : shapes) {
+				if (shape instanceof XSLFTextShape) {
+					XSLFTextShape textShape = (XSLFTextShape) shape;
+					String text = textShape.getText();
+					if (text.equalsIgnoreCase("Post Cutover")) {
+						textShape.setText("govind");
+					}
+					System.out.println("Text: " + text);
+				} else if (shape instanceof XSLFPictureShape) {
+					XSLFPictureShape image = (XSLFPictureShape) shape;
+					XSLFPictureData picture = image.getPictureData();
+					System.out.println("pciture ");
+					if (i < imageList.size()) {
+						File imagbyte = new File(imageList.get(i++));
+						byte[] pictureData = IOUtils.toByteArray(new FileInputStream(imagbyte));
+						picture.setData(pictureData);
+					}
+					System.err.println(image.getPictureData().getFileName());
+				}
+			}
+		}
+		// creating a file object
+		File file = new File("c:\\uploads\\addingimage.pptx");
+		FileOutputStream out = new FileOutputStream(file);
+		// saving the changes to a file
+		ppt.write(out);
+		System.out.println("image added successfully");
+	}
+}
