@@ -1,0 +1,29 @@
+package code;
+
+public class SplitterTest {
+
+	public static void main(String[] args) {
+		int l = 5;
+		String s = Integer.toBinaryString(l);
+		System.out.println(s);
+		
+		System.out.println(countMax1Streak(l));
+	}
+
+	static int countMax1Streak(int value) { 
+		int max = 0;
+		int count = 1;
+		while (value != 0) {
+			if ((value & 0b11) == 0b11) {
+				count++;
+			} else {
+				count = 1;
+			}
+			value >>>= 1;
+			if (count > max) {
+				max = count;
+			}
+		}
+		return max;
+	}
+}
