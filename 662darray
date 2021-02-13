@@ -1,0 +1,64 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int[][] arr = new int[6][6];
+        int pos = 0;
+         int hourGlassSum[] = new int[16];
+        for (int i = 0; i < 6; i++) {
+            String[] arrRowItems = scanner.nextLine().split(" ");
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+            for (int j = 0; j < 6; j++) {
+                int arrItem = Integer.parseInt(arrRowItems[j]);
+                arr[i][j] = arrItem;
+            }
+        }
+    
+           for (int i = 0; i < 4; i++) {
+             for (int j = 0; j < 4; j++) {
+               hourGlassSum[pos] = calculateHourGlassSum(arr, i, i + 2, j, j + 2);
+                  pos++;
+                }
+            }
+            System.out.println(findmax(hourGlassSum));
+    
+        scanner.close();
+    }
+    
+      public static int calculateHourGlassSum(int arr[][], int pos1, int pos2, int pos3, int pos4) {
+
+                int sum = 0;
+                int exclRowNum = pos1 + 1;
+                int exclColNum1 = pos3;
+                int exclColNum2 = pos4;
+                for (int arr_i = pos1; arr_i <= pos2; arr_i++) {
+                    for (int arr_j = pos3; arr_j <= pos4; arr_j++) {
+                        sum = sum + arr[arr_i][arr_j];
+                    }
+                }
+                sum = sum - (arr[exclRowNum][exclColNum1] + arr[exclRowNum][exclColNum2]);
+                return sum;
+            }
+
+            
+            public static int findmax(int arr[]) {
+                int max = arr[0];
+                for (int i = 0; i < arr.length; i++) {
+                    if (arr[i] >= max)
+                        max = arr[i];
+                }
+                return max;
+            }
+}
+https://www.hackerrank.com/challenges/30-2d-arrays/problem
