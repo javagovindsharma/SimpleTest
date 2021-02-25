@@ -1,0 +1,25 @@
+select    concat(b.name,'(',substr(b.OCCUPATION,1,1),')') 
+from OCCUPATIONS b order by b.name asc;
+select concat('There are a total of ',a.counts,' ',LOWER(a.OCCUPATION),'s.') 
+from     (select  count(*) as counts,OCCUPATION
+    from OCCUPATIONS  group by OCCUPATION order by counts)    as a;
+    
+    
+    
+    
+    
+    
+    Ashely(P)
+Christeen(P)
+Jane(A)
+Jenny(D)
+Julia(A)
+Ketty(P)
+Maria(A)
+Meera(S)
+Priya(S)
+Samantha(D)
+There are a total of 2 doctors.
+There are a total of 2 singers.
+There are a total of 3 actors.
+There are a total of 3 professors.
