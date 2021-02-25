@@ -23,3 +23,42 @@ There are a total of 2 doctors.
 There are a total of 2 singers.
 There are a total of 3 actors.
 There are a total of 3 professors.
+
+
+
+CREATE TABLE Occupations (
+     NAME VARCHAR(MAX),
+     Occupation VARCHAR(MAX)
+    )
+INSERT  INTO Occupations
+VALUES
+        ('Samantha','Doctor'),
+        ('Julia','Actor'),
+        ('Maria','Actor'),
+        ('Meera','Singer'),
+        ('Ashley','Professor'),
+        ('Ketty','Professor'),
+        ('Christeen','Professor'),
+        ('Jane','Actor'),
+        ('Jenny','Doctor'),
+        ('Priya','Singer');
+
+SELECT
+    [Doctor],
+    [Professor],
+    [Singer],
+    [Actor]
+FROM
+    (SELECT 
+         ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) rn,
+         [Name],
+         [Occupation] 
+     FROM 
+         Occupations
+    ) AS source 
+PIVOT
+    ( MAX([Name]) FOR [occupation] IN ([Doctor],[Professor],[Singer],[Actor]) ) as pvt
+ORDER BY rn
+
+
+DROP TABLE Occupations
