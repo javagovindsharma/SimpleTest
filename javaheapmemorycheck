@@ -1,0 +1,7 @@
+PS C:\Users\govind.sharma> kubectl get pods -n default --no-headers | ForEach-Object {
+>>     $podName = $_.Split()[0]
+>>     kubectl exec $podName -- ps
+>> }
+
+
+  
